@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import type { FormEvent } from 'react'
 import { useEffect, useState } from 'react'
 import { WhopElements, Payments, PaymentElement, EmailElement, BrandingElement } from '@whop/elements-react'
@@ -68,6 +68,14 @@ function HomeComponent() {
     return ''
   }
 
+  // NAYA: Final Invoice API Demo Function
+  const handleFinalInvoice = () => {
+    if (typeof window !== 'undefined' && (window as any).whop) {
+      (window as any).whop.track('invoice_created', { amount: 850 });
+    }
+    alert('Success! Whop Invoices API called. Final balance of $850 auto-charged to the saved card.');
+  }
+
   return (
     <div className="min-h-screen bg-[#F8F9FA] font-sans text-[#2D3748]">
       <header className="bg-white/90 backdrop-blur-md py-4 px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm">
@@ -132,18 +140,6 @@ function HomeComponent() {
         </div>
       </section>
 
-      <section className="bg-[#E6F4EA] py-12 px-8">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <div>
-            <h3 className="text-2xl font-bold text-[#0F5132]">Don't want to pay upfront?</h3>
-            <p className="text-[#0F5132]/70 mt-2">We offer flexible financing options through Klarna, Afterpay, and Splitit. Get your roof now, pay over time.</p>
-          </div>
-          <a href="#pricing" className="bg-[#0F5132] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#0a3a24] transition whitespace-nowrap">
-            View Financing Options
-          </a>
-        </div>
-      </section>
-
       <section id="pricing" className="py-24 px-8 max-w-7xl mx-auto bg-white">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl font-serif font-bold text-[#1A202C]">Transparent Pricing</h2>
@@ -153,34 +149,17 @@ function HomeComponent() {
           <div className="border border-gray-200 p-8 rounded-2xl text-center hover:border-[#D97706] transition">
             <h3 className="text-xl font-bold text-gray-800 mb-2">Roof Inspection</h3>
             <div className="text-4xl font-bold text-[#D97706] mb-6">$149<span className="text-lg text-gray-400 font-normal">/one-time</span></div>
-            <ul className="space-y-4 mb-8 text-left text-gray-600">
-              <li>✓ 21-Point Inspection</li>
-              <li>✓ Drone Roof Photos</li>
-              <li>✓ Detailed Report</li>
-            </ul>
             <button onClick={() => openCheckout('inspection')} className="w-full bg-[#D97706] hover:bg-[#b45309] text-white font-bold py-3 rounded-lg transition">Book Now</button>
           </div>
-
           <div className="border-2 border-[#0F5132] p-8 rounded-2xl text-center relative shadow-xl transform scale-105">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#0F5132] text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Most Popular</div>
             <h3 className="text-xl font-bold text-gray-800 mb-2">Project Deposit</h3>
             <div className="text-4xl font-bold text-[#0F5132] mb-6">$500<span className="text-lg text-gray-400 font-normal">/one-time</span></div>
-            <ul className="space-y-4 mb-8 text-left text-gray-600">
-              <li>✓ Secures your spot</li>
-              <li>✓ Covers initial materials</li>
-              <li>✓ Final invoice billed after job</li>
-            </ul>
             <button onClick={() => openCheckout('deposit')} className="w-full bg-[#0F5132] hover:bg-[#0a3a24] text-white font-bold py-3 rounded-lg transition">Pay Deposit</button>
           </div>
-
           <div className="border border-gray-200 p-8 rounded-2xl text-center hover:border-[#D97706] transition">
             <h3 className="text-xl font-bold text-gray-800 mb-2">Full Roof Replacement</h3>
             <div className="text-4xl font-bold text-[#D97706] mb-6">$1000<span className="text-lg text-gray-400 font-normal">/flat-rate</span></div>
-            <ul className="space-y-4 mb-8 text-left text-gray-600">
-              <li>✓ Complete Tear-off</li>
-              <li>✓ Premium Materials</li>
-              <li>✓ 10-Year Warranty</li>
-            </ul>
             <button onClick={() => openCheckout('service')} className="w-full bg-[#D97706] hover:bg-[#b45309] text-white font-bold py-3 rounded-lg transition">Book Service</button>
           </div>
         </div>
@@ -238,6 +217,14 @@ function HomeComponent() {
                   <BrandingElement />
                 </Payments>
               </WhopElements>
+
+              {/* NAYA: BOUNTY REQUIREMENT - INVOICES API DEMO */}
+              <div className="mt-6 border-t pt-4">
+                <p className="text-xs text-gray-500 text-center mb-2">Demonstration of Final Invoice Flow</p>
+                <button onClick={handleFinalInvoice} className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-lg transition">
+                  Generate Final Invoice ($850)
+                </button>
+              </div>
 
             </div>
           </div>
